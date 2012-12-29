@@ -46,10 +46,10 @@ include_once(INC . 'lang.updata.php');
 
 $langue    = $en;                                     // Pour changer la langue : $fr ou $en -- To change the language, put $en
 $pass      = 'coucou';                                // Mot de passe actuel
-$allow_ext = array(                                   // Les extensions des fichiers autorisés
+$allow_ext = array(                                   // Les extensions des fichiers autorisés. Attention aux formats comme sh, exe ou encore php
                 'accdb',
                 'java', 'docx', 'xlsx', 'html', 'pptx',
-                'zip', 'pdf', 'doc', 'xls', 'odt', 'txt', 'htm', 'css', 'sql', 'swf', 'php', 'cbl', 
+                'zip', 'pdf', 'doc', 'xls', 'odt', 'txt', 'htm', 'css', 'sql', 'swf', 'cbl', 
                 'cfg', 'dat', 'ind', 'ini', 'bat', 'cpp', 'txt', 'ppt', 'vpp', 'vsd', 'lun', 'mp3', 'mp4', 'flv', 'avi', 'ddl',
                 'sh', 'py', '7z', 'c',
                 'jpg', 'png', 'gif', 'bmp', 'ico'
@@ -90,6 +90,8 @@ function checkPHPVersion() {
         exit();
     }
 }
+
+checkPHPVersion();
 
 // -----------------------------------------------------------------------------
 // Sécurité
