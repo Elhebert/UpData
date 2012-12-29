@@ -21,31 +21,34 @@
  * 
  * 
  * Cette modeste application a pour but de vous permettre d'uploader rapidement des fichiers 
- * sur votre serveur web. Rapide, simple et facile à configurer. En effet, il vous suffit 
- * juste de vous rendre dans la partie 'Variable utilisateur' pour le configurer comme bon 
- * vous semble.
+ * sur votre serveur web. Rapide, simple et "facile" à configurer. En effet, il vous suffit 
+ * juste de vous rendre dans la partie 'Variable utilisateur' pour modifier les paramètres
+ * comme bon vous semble.
  * 
  * @TODO - il est possible d'aller plus loin :
  *  * création des dossiers auto
+ *  * problème avec ie ?!
+ *  * Lors de la suppression : vérifier que le fichier existe bien. Info sinon
+ *  * Lors de l'ajout : vérifier qu'il n'y a pas un fichier déjà présent avec ce nom. Renommer si nécessaire
  * 
  */
 
 session_start('UpData');
 
+include_once(INC . 'lang.updata.php');                // Fichier langue
+
 // -----------------------------------------------------------------------------
 // VARIABLE UTILISATEUR
 
 @ini_set('upload_max_filesize', '16M');               // Taille maximale d'un fichier à charger
+@ini_set('memory_limit', '125M');                     // Mémoire limite qu'un script est autorisé à allouer
 @ini_set('max_execution_time', 0);                    // Temps max pour l'exécution d'un script
-@ini_set('memory_limit', '512M');                     // Mémoire limite qu'un script est autorisé à allouer
-define('PATH_UP', 'data/');                           // Path depuis la racine
-define('INC', 'inc/');                                // Path où se situe les éléments
-define('PLUPLOAD', 'inc/plupload/');                  // Path où se situe Plupload
-
-include_once(INC . 'lang.updata.php');
+define('PATH_UP', 'data/');                           // Path où se situe les fichiers uploadés
+define('PLUPLOAD', 'inc/plupload/');                  // Path où se situe les fichiers de Plupload
+define('INC', 'inc/');                                // Path où se situe les éléments nécessaire à l'app
 
 $langue    = $en;                                     // Pour changer la langue : $fr ou $en -- To change the language, put $en
-$pass      = 'coucou';                                // Mot de passe actuel
+$pass      = 'coucou';                                // Mot de passe actuel. Sensible à la casse
 $allow_ext = array(                                   // Les extensions des fichiers autorisés. Attention aux formats comme sh, exe ou encore php
                 'accdb',
                 'java', 'docx', 'xlsx', 'html', 'pptx',
@@ -59,16 +62,16 @@ $allow_ext = array(                                   // Les extensions des fich
 // Configuration
 
 // Config générale
-header('Content-Type: text/html; charset=utf-8');   // Charset
-date_default_timezone_set('Europe/Brussels');       // Timezone
-@ini_set('magic_quotes_runtime', 0);                // Désactive la fonction magic_quotes
-@ini_set('magic_quotes_gpc', '0');                  // Désactive la fonction magic_quotes
+header('Content-Type: text/html; charset=utf-8');     // Charset
+@ini_set('magic_quotes_runtime', 0);                  // Désactive la fonction magic_quotes
+@ini_set('magic_quotes_gpc', '0');                    // Désactive la fonction magic_quotes
+date_default_timezone_set('Europe/Brussels');         // Timezone
 
-// Version
+// Version de l'app
 define('VERSION',      'v1.Alpha');
 define('NAME_VERSION', 'UpData');
 
-// Si le sysadmin a activé les magic quotes, ceci a pour effet de les désactivés
+// Si le sysadmin a activé les magic quotes, ceci aura pour effet de les désactiver
 if (get_magic_quotes_gpc()) {
     function stripslashes_deep($value) { 
         $value = is_array($value) ? array_map('stripslashes_deep', $value) : stripslashes($value); 
@@ -80,9 +83,7 @@ if (get_magic_quotes_gpc()) {
     $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
 }
 
-/**
- * Vérifie la version de PHP. Si la version est inférieure à 5.1.0, l'installation ne pourra pas se faire !
- */
+// Vérification de la version de PHP. Si la version est inférieure à 5.1.0, l'installation ne pourra pas se faire !
 function checkPHPVersion() {
     if (version_compare(PHP_VERSION, '5.1.0') < 0) {
         die('La version est obsolète ! Mettez à jour votre serveur avant de continuer. <br />
@@ -110,23 +111,25 @@ if ($_SERVER['PHP_SELF'] !== $_SERVER['SCRIPT_NAME']) {
 // -----------------------------------------------------------------------------
 // Divers
 
+// Supprimer les accents de la chaîne passée en paramètre
 function cleanAccent($str) {
     $str = strtr($str,"ÀÁÂÃÄÅàáâãäåÇçÒÓÔÕÖØòóôõöøÈÉÊËèéêëÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ,",
-    "AAAAAAaaaaaaCcOOOOOOooooooEEEEeeeeIIIIiiiiUUUUuuuuyNn_");
+                      "AAAAAAaaaaaaCcOOOOOOooooooEEEEeeeeIIIIiiiiUUUUuuuuyNn_");
  
     $str = strtolower(trim($str)) ;
     $str = preg_replace('/[^a-z0-9\-\.,\*]/', '-', $str) ;
     $str = preg_replace('/([\-\.,\*]{2,})/ue', "substr('\\1', 0, 1)", $str) ;
     $str = preg_replace('/^[^a-z0-9]|[^a-z0-9]$/', '', $str ) ;
-    $str = str_replace('.','-',$str);
+    $str = str_replace('.', '-', $str);
 
-    return ($str) ;
+    return $str;
 }
 
 // -----------------------------------------------------------------------------
 // TRAITEMENT
 
 // --- VERIF PASS
+// Vérification du mot de passe entré par l'utilisateur.
 if(isset($_GET['action']) && $_GET['action'] == "verif") {
     if(isset($_GET['token']) && $_GET['token'] == $_SESSION['tokens']['key']) {
         if($_GET['password'] == $pass) {
@@ -142,6 +145,7 @@ if(isset($_GET['action']) && $_GET['action'] == "verif") {
 }
 
 // --- DELETE
+// Suppression du fichier passé dans l'URL
 if(isset($_GET['action']) && $_GET['action'] == "delete") {
     if(isset($_GET['token']) && $_GET['token'] == $_SESSION['tokens']['key']) {
         unlink(PATH_UP . $_GET['file']);
@@ -155,6 +159,7 @@ if(isset($_GET['action']) && $_GET['action'] == "delete") {
 
 
 // --- UPLOAD
+// Méthode permettant d'uplader le fichier sur le serveur.
 if(isset($_GET['action']) && $_GET['action'] == "upload") {
     if(empty($_FILES) || $_FILES['file']['error'] != 0) {
         die('{"error":true, "message":"<?php echo $langue[\'OP_FAILURE\']; ?>"}');
@@ -169,7 +174,6 @@ if(isset($_GET['action']) && $_GET['action'] == "upload") {
     $name = cleanAccent($name);
     $name .= '.' . $ext;
 
-    // On uploade !
     if(in_array($ext, $allow_ext)){
         if(move_uploaded_file($_FILES['file']['tmp_name'], PATH_UP . $name)) {
             $link = PATH_UP . $name;
@@ -209,7 +213,7 @@ if(isset($_GET['action']) && $_GET['action'] == "upload") {
                 </div>
 
                 <div id="filelist">
-                    <?php foreach(glob(PATH_UP . '*.*') as $v): ?>
+                    <?php foreach(glob(PATH_UP . '*.*') as $v): // Listing des fichiers ?>
                         <div class="file">
                             <?php echo basename($v); ?>
                             <div class="actions">
