@@ -8,23 +8,34 @@
 
 ###Download
 
-Pour télécharger la dernière version d'UpData, cliquez sur Download en haut de la page.
+Pour télécharger la dernière version d'UpData, il vous suffit de cliquer sur le bouton zip
+ci-dessus. N'hésitez pas non plus à cloner/fork le projet.
+
+###Kesako ?
+
+Grâce à ces quelques fichiers, en quelques fractions de secondes, vous serez capable
+d'uploader des fichiers sur votre serveur web. Simple, rapide et surtout : efficace.
+
+Pour les plus curieux : le script gère le multi-upload, et le tout en ajax.
 
 ##Installation
 
 Avant de procéder à l'installation, il est nécessaire de vérifier 
-l'environnement de votre serveur ! Voici les prérequis :
+votre futur environnement ! Voici les prérequis :
+* Un serveur web (Sans blague ?)
 * PHP 5.1 ou version supérieur (A vérifier mais c'est juste au cas où)
 
 Dès que vous vous êtes assuré de ces quelques points :
 * Créer un dossier sur votre espace web
-* Mettez-y le contenu du fichier zip
+* Mettez-y le contenu du fichier zip (ou via wget)
+* Si nécessaire, modifier le script pour le faire correspondre à vos beoins (mot de passe, dossier data, etc.)
 * Accéder à cette adresse via le navigateur
 * Enjoy !
 
 ##Mot de la fin
 
-Pour réaliser cette application, j'ai utilisé PluPload. [Plus d'info](http://plupload.com/) !
+Remerciement tout particulier à [PluPload](http://plupload.com/ "PluPload"), sans lequel ce script n'aurait jamais vu le jour ! 
+C'est grâce à cette librairie que UpData a pu voir le jour.
 
 Cette version est actuellement en retour de bug, toutes les remarques/critiques sont bonnes à prendre.
 

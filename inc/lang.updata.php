@@ -15,7 +15,8 @@ $en = array(
         'about'          => 'It\'s easy. Drag\'n drop your files in the drop area or use the button to upload files on server.',
         'file'           => 'Drop your files',
         'or'             => 'or',
-        'open'           => 'Open'
+        'open'           => 'Open',
+        'footer'         => 'Created by <a href="https://github.com/Hennek/UpData" title="UpData - Hennek">Hennek</a>'
     );
 
 $fr = array(
@@ -30,5 +31,6 @@ $fr = array(
         'about'          => 'C\'est simple comme bonjour, déposez vos fichiers dans la zone prévue ou utilisez le bouton parcourir afin d\'uploader vos fichiers sur le serveur.',
         'file'           => 'Déposez vos fichiers',
         'or'             => 'ou',
-        'open'           => 'Parcourir'
+        'open'           => 'Parcourir',
+        'footer'         => 'Ce script a été créé par <a href="https://github.com/Hennek/UpData" title="UpData - Hennek">Hennek</a>'
     );

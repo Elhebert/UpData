@@ -162,3 +162,13 @@ input[type="submit"], .btn {
     -khtml-border-radius: 25px;
     -webkit-border-radius: 25px;
 }
+
+footer {
+    width: 60%;
+    margin: 50px auto 0px;
+    padding: 5px 0px;
+    text-align: left;
+    font-size: 11px;
+    color: #333;
+    border-top: 1px solid #ddd;
+}

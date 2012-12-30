@@ -25,9 +25,13 @@
  * juste de vous rendre dans la partie 'Variable utilisateur' pour modifier les paramètres
  * comme bon vous semble.
  * 
+ * Note : si vous souhaitez réutiliser ce script pour l'un de vos projets, je vous conseille
+ * de retirer la partie qui se charge de demander le mot de passe de l'internaute et d'établir
+ * un système de session. De nombreux tutoriels existent.
+ * 
  * @TODO - il est possible d'aller plus loin :
- *  * création des dossiers auto
- *  * problème avec ie ?!
+ *  * Création du dossier "data"
+ *  * Solution/hack ie ?!
  *  * Lors de la suppression : vérifier que le fichier existe bien. Info sinon
  *  * Lors de l'ajout : vérifier qu'il n'y a pas un fichier déjà présent avec ce nom. Renommer si nécessaire
  * 
@@ -47,7 +51,7 @@ define('INC', 'inc/');                                // Path où se situe les �
 
 include_once(INC . 'lang.updata.php');                // Fichier langue
 
-$langue    = $en;                                     // Pour changer la langue : $fr ou $en -- To change the language, put $en
+$langue    = $fr;                                     // Pour changer la langue : $fr ou $en -- To change the language, put $en
 $pass      = 'coucou';                                // Mot de passe actuel. Sensible à la casse
 $allow_ext = array(                                   // Les extensions des fichiers autorisés. Attention aux formats comme sh, exe ou encore php
                 'accdb',
@@ -334,5 +338,9 @@ if(isset($_GET['action']) && $_GET['action'] == "upload") {
 
             })
         </script>
+
+        <footer>
+            <?php echo $langue['footer']; ?> - <?php echo NAME_VERSION; ?> <?php echo VERSION; ?>
+        </footer>
     </body>
 </html>
