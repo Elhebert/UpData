@@ -35,8 +35,6 @@
 
 session_start('UpData');
 
-include_once(INC . 'lang.updata.php');                // Fichier langue
-
 // -----------------------------------------------------------------------------
 // VARIABLE UTILISATEUR
 
@@ -46,6 +44,8 @@ include_once(INC . 'lang.updata.php');                // Fichier langue
 define('PATH_UP', 'data/');                           // Path où se situe les fichiers uploadés
 define('PLUPLOAD', 'inc/plupload/');                  // Path où se situe les fichiers de Plupload
 define('INC', 'inc/');                                // Path où se situe les éléments nécessaire à l'app
+
+include_once(INC . 'lang.updata.php');                // Fichier langue
 
 $langue    = $en;                                     // Pour changer la langue : $fr ou $en -- To change the language, put $en
 $pass      = 'coucou';                                // Mot de passe actuel. Sensible à la casse
@@ -316,11 +316,20 @@ if(isset($_GET['action']) && $_GET['action'] == "upload") {
                 $('.del').live('click', function(e) {
                     e.preventDefault();
                     var elem = $(this);
-                    if(confirm("<?php echo $langue['OP_CONFIRM_DEL']; ?>")) {
-                        $.get('', {action: 'delete', file:elem.attr('href'), token:'<?php echo $_SESSION['tokens']['key']; ?>'});
-                        elem.parent().parent().slideUp();
-                    }
-                    return false;
+
+                    var pass = prompt("<?php echo $langue['OP_CONFIRM_DEL']; ?> <?php echo $langue['TXT_PASS']; ?>","");
+                    $.get(
+                        '', 
+                        {action: 'verif', password:pass, token:'<?php echo $_SESSION['tokens']['key']; ?>'},
+                        function(data) {
+                            var response = $.parseJSON(data);
+                            if(response.message == "OK" && response.error == false) {
+                                $.get('', {action: 'delete', file:elem.attr('href'), token:'<?php echo $_SESSION['tokens']['key']; ?>'});
+                                elem.parent().parent().slideUp();
+                            }
+                            return false;
+                        }
+                    );
                 });
 
             })
