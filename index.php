@@ -49,17 +49,15 @@ define('PATH_UP', 'data/');                           // Path où se situe les f
 define('PLUPLOAD', 'inc/plupload/');                  // Path où se situe les fichiers de Plupload
 define('INC', 'inc/');                                // Path où se situe les éléments nécessaire à l'app
 
-include_once(INC . 'lang.updata.php');                // Fichier langue
+include_once(INC . 'core/lang.updata.php');           // Fichier langue
 
-$langue    = $fr;                                     // Pour changer la langue : $fr ou $en -- To change the language, put $en
+$langue    = $lang['fr'];                             // Pour changer la langue : 'fr' ou 'en' -- To change the language, put $en
 $pass      = 'coucou';                                // Mot de passe actuel. Sensible à la casse
 $allow_ext = array(                                   // Les extensions des fichiers autorisés. Attention aux formats comme sh, exe ou encore php
-                'accdb',
-                'java', 'docx', 'xlsx', 'html', 'pptx',
+                'accdb', 'java', 'docx', 'xlsx', 'html', 'pptx', 'sh', 'py', '7z', 'c',
                 'zip', 'pdf', 'doc', 'xls', 'odt', 'txt', 'htm', 'css', 'sql', 'swf', 'cbl', 
-                'cfg', 'dat', 'ind', 'ini', 'bat', 'cpp', 'txt', 'ppt', 'vpp', 'vsd', 'lun', 'mp3', 'mp4', 'flv', 'avi', 'ddl',
-                'sh', 'py', '7z', 'c',
-                'jpg', 'png', 'gif', 'bmp', 'ico'
+                'cfg', 'dat', 'ind', 'ini', 'bat', 'cpp', 'txt', 'ppt', 'vpp', 'vsd', 'lun', 
+                'mp3', 'mp4', 'flv', 'avi', 'ddl', 'jpg', 'png', 'gif', 'bmp', 'ico'
             );
 
 // -----------------------------------------------------------------------------
@@ -69,7 +67,6 @@ $allow_ext = array(                                   // Les extensions des fich
 header('Content-Type: text/html; charset=utf-8');     // Charset
 @ini_set('magic_quotes_runtime', 0);                  // Désactive la fonction magic_quotes
 @ini_set('magic_quotes_gpc', '0');                    // Désactive la fonction magic_quotes
-date_default_timezone_set('Europe/Brussels');         // Timezone
 
 // Version de l'app
 define('VERSION',      'v1.Alpha');
@@ -201,7 +198,7 @@ if(isset($_GET['action']) && $_GET['action'] == "upload") {
     <head>
         <meta charset="utf-8" />
         <title>UpData</title>
-        <link rel="stylesheet" type="text/css" href="<?php echo INC; ?>style.css" />
+        <link rel="stylesheet" type="text/css" href="<?php echo INC; ?>tpl/style.css" />
     </head>
     <body>
         
@@ -233,9 +230,11 @@ if(isset($_GET['action']) && $_GET['action'] == "upload") {
             </div>
         </div>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
-        <!--<script src="<?php echo INC; ?>jquery.min.js" type="text/javascript"></script>-->
+        <footer>
+            <?php echo $langue['footer']; ?> - <?php echo NAME_VERSION; ?> <?php echo VERSION; ?>
+        </footer>
 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
         <script type="text/javascript" src="<?php echo PLUPLOAD; ?>plupload.js"></script>
         <script type="text/javascript" src="<?php echo PLUPLOAD; ?>plupload.html5.js"></script>
         <script type="text/javascript" src="<?php echo PLUPLOAD; ?>plupload.flash.js"></script>
@@ -335,12 +334,7 @@ if(isset($_GET['action']) && $_GET['action'] == "upload") {
                         }
                     );
                 });
-
             })
         </script>
-
-        <footer>
-            <?php echo $langue['footer']; ?> - <?php echo NAME_VERSION; ?> <?php echo VERSION; ?>
-        </footer>
     </body>
 </html>
