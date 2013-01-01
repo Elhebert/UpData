@@ -25,6 +25,8 @@
  * juste de vous rendre dans la partie 'Variable utilisateur' pour modifier les paramètres
  * comme bon vous semble.
  * 
+ * Un tout grand merci à Grafikart.fr, UpData est basé sur l'un de ses tutos.
+ * 
  * Note : si vous souhaitez réutiliser ce script pour l'un de vos projets, je vous conseille
  * de retirer la partie qui se charge de demander le mot de passe de l'internaute et d'établir
  * un système de session. De nombreux tutoriels existent.
