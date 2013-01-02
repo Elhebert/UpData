@@ -28,7 +28,7 @@ votre futur environnement ! Voici les prérequis :
 Dès que vous vous êtes assuré de ces quelques points :
 * Créer un dossier sur votre espace web
 * Mettez-y le contenu du fichier zip (ou via wget)
-* Si nécessaire, modifier le script pour le faire correspondre à vos beoins (mot de passe, dossier data, etc.)
+* Si nécessaire, modifier le script pour le faire correspondre à vos besoins (mot de passe, dossier data, etc.)
 * Accéder à cette adresse via le navigateur
 * Enjoy !
 
